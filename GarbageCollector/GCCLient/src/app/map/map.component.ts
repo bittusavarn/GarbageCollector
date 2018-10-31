@@ -22,8 +22,8 @@ export class MapComponent implements OnInit {
     this.map = tomtom.L.map('map', {
       key: 'kUvfmVuGx1CpgWiTL7TKS1NegbyaOxpR',
       basePath: 'sdk',
-      source: 'raster'
-    });
+      source: 'raster',
+    }).setView([24.94, 78.04], 12);
 
     this.garbageIcon = tomtom.L.icon({
       iconUrl: 'assets/sdk/images/marker-icon.png',
@@ -38,7 +38,7 @@ export class MapComponent implements OnInit {
       tomtom.reverseGeocode().position(position).go().then(function (results) {
         console.log('Rsults =' + JSON.stringify(results));
         mapObj.drawAddresssOnMap(results);
-
+        mapObj.map.setView([position.lat, position.lng], 12);
       });
     });
 

@@ -771,7 +771,8 @@ export class RegisterGarbageComponent extends BaseComponent implements OnInit, R
 
       console.log(JSON.stringify('data is' + this.transferService.getData()));
       if (this.transferService.getData ) {
-        this.model = this.transferService.getData();
+       this.model = this.transferService.getData();
+       this.restServis.get('submunicpality/all?city=' + this.model.garbageLocation.city, this , 0);
       }
   }
 
