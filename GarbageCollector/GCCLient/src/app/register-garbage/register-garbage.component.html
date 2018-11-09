@@ -1,0 +1,66 @@
+<div class="col-md-8 col-md-offset-2 ">
+<div *ngIf="state.showMessage" [ngClass]="{ 'has-error': state.error,'has-success': !state.error}">{{state.message}}</div>
+
+<form name="form" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
+ 
+  <div class="form-group">
+    <label for="addressLine">Address Line</label>
+    <input type="text" class="form-control" name="addressLine" [(ngModel)]="model.garbageLocation.addressLine" #addressLine="ngModel" />
+ </div>
+ 
+ <div class="form-group">
+    <label for="streetName">Street Name</label>
+    <input type="text" class="form-control" name="streetName" [(ngModel)]="model.garbageLocation.streetName" #streetName="ngModel" />
+  </div>
+
+  <div class="form-group">
+      <label for="streetNumber">Street Number</label>
+      <input type="text" class="form-control" name="streetNumber" [(ngModel)]="model.garbageLocation.streetNumber" #streetNumber="ngModel" />
+    </div>
+  
+  <div class="form-group">
+    <label for="city">City/Municpality</label>
+    <input type="text" class="form-control" name="city" [(ngModel)]="model.garbageLocation.city" #city="ngModel" (ngModelChange)="onCityChange($event)"/>
+  </div>
+  <div class="form-group">
+      <label for="submunicip">Sub Municipality</label>
+         <select [(ngModel)]="model.submunicipality.id" name="submunicip" class="form-control">
+                  <option *ngFor="let x of submunicipalities" [ngValue]="x.id" >{{x.name}}</option>
+       </select>
+    </div>
+    
+  <div class="form-group">
+    <label for="country">Country</label>
+    <select [(ngModel)]="model.garbageLocation.country" name = "country" class="form-control">
+                <option *ngFor="let x of countries" [ngValue]="x.value" >{{x.label}}</option>
+     </select>
+  </div>
+  <div class="form-group">
+     <label for="pin">Pin</label>
+     <input type="text" class="form-control" name="pin" [(ngModel)]="model.garbageLocation.pin" #pin="ngModel" />
+  </div>
+   <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !lat.valid }">
+    <label for="lat">Latitude</label>
+    <input type="text" class="form-control" name="lat" [(ngModel)]="model.garbageLocation.lat" #lat="ngModel" required />
+    <div *ngIf="f.submitted && !lat.valid" class="help-block">Latitude is required</div>
+  </div>
+  <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !lon.valid }">
+    <label for="lon">Longitude</label>
+    <input type="text" class="form-control" name="lon" [(ngModel)]="model.garbageLocation.lon" #lon="ngModel" required/>
+    <div *ngIf="f.submitted && !lon.valid" class="help-block">Longitude is required</div>
+  </div>
+  <div class="form-group">
+      <label for="mobno">Mobile Number</label>
+      <input type="text" class="form-control" name="mobno" [(ngModel)]="model.mobNo" #mobno="ngModel" />
+   </div>
+  <div class="form-group">
+      <a (click)="showOnMap()" class="btn btn-link">Select on Map to register more accurate location</a>
+  </div>
+  <div class="form-group">
+      <button [disabled]="state.loading" class="btn btn-primary" >Register</button>
+      <img *ngIf="state.loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+      />
+      <a [routerLink]="['/login']" class="btn btn-link" >Cancel</a>
+    </div>
+</form>
+</div>  
