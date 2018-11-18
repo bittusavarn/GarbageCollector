@@ -1,0 +1,16 @@
+<div class="table-responsive">
+<table class="table">
+  <tr>
+    <th>Pickup Location</th>
+    <th>Weight</th>
+    <th>Otp</th>
+    <th>Assigned Truck</th>
+  </tr>
+  <tr *ngFor="let item of model;let i = index">
+    <td>{{item.garbageLocation.freeformAddress}}</td>
+    <td>{{item.garbageweight}}</td>
+    <td>{{item.otp}}</td>
+    <td><a  style ="cursor: pointer" (click) = "getTruckRoute(i)" data-toggle="tooltip" title="Click to track the assigned truck">{{item.truck.truckNumber}}</a></td>
+   </tr>
+ </table>
+</div>

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { TransferServiceService } from '../services/transfer-service.service';
 import { Address } from '../models/Address';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { BaseComponent } from '../models/BaseComponent';
 declare let L;
 declare let tomtom: any;
 
@@ -10,62 +11,95 @@ declare let tomtom: any;
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapComponent extends BaseComponent implements OnInit {
   map: any = {};
+  returnUrl: string;
+  value: any;
+
   garbageMarker: any = {};
   garbageIcon: any = {};
   searchResult: any = {};
-   constructor(private trasferService: TransferServiceService, private router: Router) {
+  constructor(private trasferService: TransferServiceService, private router: Router, private route: ActivatedRoute, private zone: NgZone) {
+    super();
+    window['angularComponentRef'] = {component: this, zone: zone};
+  }
+
+  callFromOutside(newValue: any) {
+    this.zone.run(() => {
+      this.value = newValue;
+      console.log(newValue);
+    });
   }
 
   ngOnInit() {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
     this.map = tomtom.L.map('map', {
       key: 'kUvfmVuGx1CpgWiTL7TKS1NegbyaOxpR',
       basePath: 'sdk',
       source: 'raster',
     }).setView([24.94, 78.04], 12);
-
+    this.map.zoomControl.setPosition('topright');
+    let iconUrl = '';
+    if (this.returnUrl === 'garbage') {
+      iconUrl = 'assets/images/garbage.png';
+    } else {
+      iconUrl = 'assets/images/truck.png';
+    }
     this.garbageIcon = tomtom.L.icon({
-      iconUrl: 'assets/sdk/images/marker-icon.png',
+      iconUrl: iconUrl,
       iconSize: [30, 30],
       iconAnchor: [15, 30],
       popupAnchor: [0, -30]
     });
     const mapObj = this;
      this.showApproxLocation();
+    this.state.loading = true;
      this.map.on('click', function (event) {
       const position = event.latlng;
       tomtom.reverseGeocode().position(position).go().then(function (results) {
         console.log('Rsults =' + JSON.stringify(results));
         mapObj.drawAddresssOnMap(results);
-        mapObj.map.setView([position.lat, position.lng], 12);
+        mapObj.map.setView([position.lat, position.lng], 17);
       });
     });
+    navigator.geolocation.getCurrentPosition((position) => {
+      mapObj.map.setView([position.coords.latitude, position.coords.longitude], 17);
+      const res: any = {};
+      res.lat = position.coords.latitude;
+      res.lon =  position.coords.longitude;
+      tomtom.reverseGeocode().position(res).go().then(function (results) {
+        mapObj.drawAddresssOnMap(results);
+        mapObj.map.setView([res.lat, res.lon], 17);
+      });
+     }, (err) => {console.log(err); });
 
   }
 
  onDone() {
-  this.trasferService.getData().garbageLocation.city = this.searchResult.address.municipality;
-  this.trasferService.getData().garbageLocation.streetName = this.searchResult.address.streetName;
-  this.trasferService.getData().garbageLocation.streetNumber = this.searchResult.address.streetNumber;
-  this.trasferService.getData().garbageLocation.country = this.searchResult.address.countryCode;
-  this.trasferService.getData().garbageLocation.pin = this.searchResult.address.postalCode;
-  this.trasferService.getData().garbageLocation.lat = this.searchResult.position.lat;
-  this.trasferService.getData().garbageLocation.lon = this.searchResult.position.lng;
-  this.router.navigateByUrl('/garbage');
+  this.trasferService.getData().city = this.searchResult.address.municipality;
+  this.trasferService.getData().streetName = this.searchResult.address.streetName;
+  this.trasferService.getData().streetNumber = this.searchResult.address.streetNumber;
+  this.trasferService.getData().country = this.searchResult.address.countryCode;
+  this.trasferService.getData().pin = this.searchResult.address.postalCode;
+  this.trasferService.getData().lat = this.searchResult.position.lat;
+  this.trasferService.getData().lon = this.searchResult.position.lng;
+  this.trasferService.getData().freeformAddress = this.searchResult.freeformAddress;
+  this.router.navigateByUrl(this.route.snapshot.queryParams['returnUrl']);
  }
 
+ onCancel() {
+  this.router.navigateByUrl(this.route.snapshot.queryParams['returnUrl']);
+ }
 
    showApproxLocation() {
     const mapObj = this;
 
-    tomtom.structuredGeocode(this.getOptions(this.trasferService.getData().garbageLocation)).go(function (results) {
+    tomtom.structuredGeocode(this.getOptions(this.trasferService.getData())).go(function (results) {
      if (results.length > 0) {
       const geoLocation: any = {};
       const result = results[0];
       geoLocation.address = result.address;
       geoLocation.position = result.position.lat + ',' + result.position.lon;
-      mapObj.drawAddresssOnMap(geoLocation);
      }
   }) ;
  }
@@ -95,12 +129,13 @@ export class MapComponent implements OnInit {
     if (geoResponse && geoResponse.address && geoResponse.address.freeformAddress) {
       this.searchResult.address  = geoResponse.address;
       this.searchResult.position = this.convertToLatLon(geoResponse.position);
-
+      this.searchResult.freeformAddress =  geoResponse.address.freeformAddress;
       this.map.removeLayer(this.garbageMarker);
       const popupContent = geoResponse.address.freeformAddress;
       this.garbageMarker = tomtom.L.marker(this.convertToLatLon(geoResponse.position), {
         icon: this.garbageIcon
       }).addTo(this.map).bindPopup(popupContent).openPopup();
+      this.state.loading = false;
     }
   }
 

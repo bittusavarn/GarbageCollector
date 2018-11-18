@@ -26,7 +26,7 @@ public class UrlFilter implements Filter{
 		// TODO Auto-generated method stub
 		if(response instanceof HttpServletResponse) {
 			HttpServletResponse httpResponse = (HttpServletResponse)response;
-			httpResponse.addHeader("access-control-allow-origin","*");
+			//httpResponse.addHeader("access-control-allow-origin","*");
 			httpResponse.addHeader("Access-Control-Allow-Headers", "Content-Type");
 		}
 		chain.doFilter(request, response);

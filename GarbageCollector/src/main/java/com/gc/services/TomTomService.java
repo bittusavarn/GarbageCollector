@@ -30,11 +30,9 @@ public class TomTomService {
 	private String ROUTE_URL = TOMTOM_BASE_URL+"routing/" + API_VERSION + "/calculateRoute/%s/json?key=" + API_KEY;
 	public RouteResponse getRouteforATruckForANewLocation(Truck truck, Address address) {
         String locationsRequest = "";
-        
-		String startLocation = truck.getStartLocation().getLat()+"," + truck.getStartLocation().getLon();
-		String endLocation = truck.getEndLocation().getLat()+"," + truck.getEndLocation().getLon();
-		locationsRequest = locationsRequest+startLocation + ":" + endLocation;
-	    Set<Garbage> garbages = truck.getGarbages();
+		String truckLocation = truck.getTruckLocation().getLat() + "," + truck.getTruckLocation().getLon();
+		locationsRequest = locationsRequest + truckLocation;
+		Set<Garbage> garbages = truck.getGarbages();
 	    if(garbages!=null) {
 	    	Iterator<Garbage> it = garbages.iterator(); 
 		while (it.hasNext()) {

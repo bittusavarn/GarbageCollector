@@ -1,13 +1,19 @@
 package com.gc.entities;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
@@ -19,13 +25,9 @@ public class UserModel {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
-	
-	private String name;
-	
-	@Email(message="Invalid Email ID")
 	@Column(unique=true)
-	@NotBlank(message="Email required")
-	private String email;
+	@NotBlank(message="Mobile Number required")
+	private String mobNo;
 	
 	private String password;
 	public Integer getId() {
@@ -34,36 +36,50 @@ public class UserModel {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
+	
+	
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
-	/*@OneToMany(fetch = FetchType.LAZY,mappedBy="user",cascade = CascadeType.ALL)
-	private List<Address> addresses;
-	
-	public List<Address> getAddresses() {
-		return addresses;
+	public String getMobNo() {
+		return mobNo;
 	}
-	public void setAddresses(List<Address> addresses) {
-		this.addresses = addresses;
-	}*/
+	public void setMobNo(String mobNo) {
+		this.mobNo = mobNo;
+	}
 	
 	
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY,mappedBy="user",cascade = CascadeType.ALL)
+	private Set<Garbage> garbages;
+	
+	
+	
+	public Set<Garbage> getGarbages() {
+		return garbages;
+	}
+	public void setGarbages(Set<Garbage> garbages) {
+		this.garbages = garbages;
+	}
+	
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY,mappedBy="user",cascade = CascadeType.ALL)
+	private Set<Truck> trucks;
+	
+	
+	public Set<Truck> getTrucks() {
+		return trucks;
+	}
+	public void setTrucks(Set<Truck> trucks) {
+		this.trucks = trucks;
+	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return " Mobile Number = "+mobNo ;
+	}
 	
 }

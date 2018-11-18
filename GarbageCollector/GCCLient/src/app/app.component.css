@@ -1,8 +1,15 @@
-.has-success{
-    color: green;
+.header{
+    height: 60px;
+    background-color: maroon;
     text-align: center;
-  }
-  .has-error{
-      color: red;
-      text-align: center;
-    }
+    padding-top: 10px;
+    color: linen;
+    z-index: 100;
+    width: 100%;
+    position: fixed;    
+}
+
+.content{
+    padding-top: 100px;
+    width: 100% 
+}

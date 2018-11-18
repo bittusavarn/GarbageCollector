@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.gc.entities.UserModel;
 import com.gc.exceptions.PersistException;
+import com.gc.pojos.ResponseTemplate;
 import com.gc.repos.UserRepository;
 import com.gc.util.ExceptionUtil;
 
@@ -27,7 +28,7 @@ public class UserService {
 		}
 
 		catch (DataIntegrityViolationException e) {
-			throw new PersistException("User with email ID " + user.getEmail() + " already exists");
+			throw new PersistException("User with Mobile Number " + user.getMobNo() + " already exists");
 		} catch (Exception e) {
 			PersistException pre = ExceptionUtil.createPersistExceptionFrom(e);
 			if (pre != null) {
@@ -38,4 +39,23 @@ public class UserService {
 		}
 
 	}
+	
+	public ResponseTemplate<UserModel> getUser(UserModel user) {
+		ResponseTemplate<UserModel> response = new ResponseTemplate<>(false);
+		UserModel userData = userRepo.getUserOfMobileNumber(user.getMobNo());
+		if (userData == null) {
+			response.setError(true);
+			response.setMessage("User Does not exists");
+		} else {
+			if (user.getPassword().equals(userData.getPassword())) {
+				response.setData(userData);
+			} else {
+				response.setError(true);
+				response.setMessage("You have entered wrong password");
+
+			}
+		}
+		return response;
+	}
+	
 }

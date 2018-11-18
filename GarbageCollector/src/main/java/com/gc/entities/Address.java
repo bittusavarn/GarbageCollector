@@ -24,18 +24,19 @@ public class Address {
 	
 	private double lon;
 	
+	private String freeformAddress;
 	
-	public Set<Truck> getTrucksStartingFromHere() {
-		return trucksStartingFromHere;
+	public Set<Truck> getTrucks() {
+		return trucks;
 	}
-	public void setTrucksStartingFromHere(Set<Truck> trucksStartingFromHere) {
-		this.trucksStartingFromHere = trucksStartingFromHere;
+	public void setTrucks(Set<Truck> trucks) {
+		this.trucks = trucks;
 	}
-	public Set<Truck> getTrucksEndingHere() {
-		return trucksEndingHere;
+	public String getFreeformAddress() {
+		return freeformAddress;
 	}
-	public void setTrucksEndingHere(Set<Truck> trucksEndingHere) {
-		this.trucksEndingHere = trucksEndingHere;
+	public void setFreeformAddress(String freeformAddress) {
+		this.freeformAddress = freeformAddress;
 	}
 	public Integer getId() {
 		return id;
@@ -93,13 +94,8 @@ public class Address {
 	}
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "startLocation", cascade = CascadeType.ALL)
-	private Set<Truck> trucksStartingFromHere;
+	@OneToMany(mappedBy = "truckLocation", cascade = CascadeType.ALL)
+	private Set<Truck> trucks;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "endLocation", cascade = CascadeType.ALL)
-	private Set<Truck> trucksEndingHere;
-	
-	
 
 }

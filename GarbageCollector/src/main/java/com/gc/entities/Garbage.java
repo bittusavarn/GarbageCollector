@@ -19,15 +19,24 @@ public class Garbage {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
+	private String otp;
 	
-    public Integer getId() {
+    public String getOtp() {
+		return otp;
+	}
+
+	public void setOtp(String otp) {
+		this.otp = otp;
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
+     
 	
 	public Address getGarbageLocation() {
 		return garbageLocation;
@@ -37,14 +46,7 @@ public class Garbage {
 		this.garbageLocation = garbageLocation;
 	}
 
-	public String getMobNo() {
-		return mobNo;
-	}
-
-	public void setMobNo(String mobNo) {
-		this.mobNo = mobNo;
-	}
-
+	
 	public Truck getTruck() {
 		return truck;
 	}
@@ -53,32 +55,50 @@ public class Garbage {
 		this.truck = truck;
 	}
 
-	private String mobNo;	
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="location")
 	private Address garbageLocation;
 	
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="truck_id")
 	private Truck truck;
 	
+	private double garbageweight;
+
+
+	public double getGarbageweight() {
+		return garbageweight;
+	}
+
+	public void setGarbageweight(double garbageweight) {
+		this.garbageweight = garbageweight;
+	}
 	
-	
+	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name="submunicipality_id")
-	private SubMunicipality submunicipality;
+	@JoinColumn(name="user_id")
+	private UserModel user;
 
 
-	public SubMunicipality getSubmunicipality() {
-		return submunicipality;
+	public UserModel getUser() {
+		return user;
 	}
 
-	public void setSubmunicipality(SubMunicipality submunicipality) {
-		this.submunicipality = submunicipality;
+	public void setUser(UserModel user) {
+		this.user = user;
 	}
 	
+	private boolean picked;
+
+
+	public boolean isPicked() {
+		return picked;
+	}
+
+	public void setPicked(boolean picked) {
+		this.picked = picked;
+	}
 	
 	
 	

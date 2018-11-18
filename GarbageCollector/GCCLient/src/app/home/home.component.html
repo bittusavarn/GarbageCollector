@@ -1,12 +1,47 @@
-﻿<div class="col-md-6 col-md-offset-3">
-    <h1>Hi {{currentUser.firstName}}!</h1>
-    <p>You're logged in with Angular 2/5 and Angular CLI!!</p>
-    <h3>All registered users:</h3>
-    <ul>
-        <li *ngFor="let user of users">
-            {{user.username}} ({{user.firstName}} {{user.lastName}})
-            - <a (click)="deleteUser(user.id)">Delete</a>
-        </li>
-    </ul>
-    <p><a [routerLink]="['/login']">Logout</a></p>
+﻿<div>
+    <div id="wrapper"  [ngClass]="ref.click === true? 'toggled' :''" >
+        <div class="overlay" [ngStyle]="{disply:ref.click === true? 'block' :'none'}" ></div>
+   
+        <!-- Sidebar -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+            <ul class="nav sidebar-nav">
+                <li class="sidebar-brand">
+                    <a>
+                     +91 {{model.mobNo}}
+                    </a>  
+                </li>
+                <li>
+                    <a href="garbage">Register Garbage</a>
+                </li>
+                <li>
+                    <a href="truck">Register your Truck</a>
+                </li>
+                <li>
+                    <a href="myTrucks">My Truck</a>
+                </li>
+                <li>
+                    <a href="myGarbages">My Garbage</a>
+                </li>
+                <li>
+                    <a (click)="logout()" style="cursor: pointer;">Logout</a>
+                </li>
+        
+            </ul>
+        </nav>
+        <!-- /#sidebar-end -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <button appSidebar  #ref="appSidebar" type="button" class="hamburger is-closed" data-toggle="offcanvas">
+                <span class="hamb-top"></span>
+    			<span class="hamb-middle"></span>
+				<span class="hamb-bottom"></span>
+            </button>
+            <div>
+                
+               <router-outlet></router-outlet> 
+            </div>
+        </div>
+        <!-- /#page-content-end -->
+    </div>
 </div>

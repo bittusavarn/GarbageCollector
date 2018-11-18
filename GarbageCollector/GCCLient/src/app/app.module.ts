@@ -16,15 +16,31 @@ import { RestService } from './services/rest.service';
 import { HttpModule } from '@angular/http';
 import { TruckComponent } from './truck/truck.component';
 import { RouteComponent } from './truck/route/route.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BasicAuthInterceptorService } from './auth/basic-auth-interceptor.service';
+import { ErrorAuthInterceptorService } from './auth/error-auth-interceptor.service';
+import { TopnavComponent } from './home/topnav/topnav.component';
+import { SidenavComponent } from './home/sidenav/sidenav.component';
+import { SidebarDirective } from './directives/sidebar.directive';
+import { MyTruckComponent } from './truck/my-truck/my-truck.component';
+import { MyGarbageComponent } from './garbage/my-garbage/my-garbage.component';
+import { PickComponent } from './garbage/pick/pick.component';
+
+const authorizedRoutes = [
+{ path: 'truck', component: TruckComponent},
+{ path: 'garbage', component: RegisterGarbageComponent},
+{ path: 'map', component: MapComponent},
+{ path: 'myTrucks', component: MyTruckComponent},
+{ path: 'myGarbages', component: MyGarbageComponent},
+{ path: 'truck/route', component: RouteComponent},
+{ path: 'garbage/pick', component: PickComponent}
+];
 
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: LoginComponent  },
+  { path: '', component: HomeComponent, canActivate: [AuthGuard], children: authorizedRoutes},
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard], children: authorizedRoutes},
+  { path: 'login', component: LoginComponent},
   { path: 'register', component: RegistrationComponent},
-  { path: 'garbage', component: RegisterGarbageComponent},
-  { path: 'map', component: MapComponent},
-  { path: 'truck', component: TruckComponent},
-  { path: 'truck/route', component: RouteComponent},
   { path: '**', redirectTo: '' }
 ];
 
@@ -39,7 +55,13 @@ const appRoutes: Routes = [
     RegisterGarbageComponent,
     MapComponent,
     TruckComponent,
-    RouteComponent
+    RouteComponent,
+    TopnavComponent,
+    SidenavComponent,
+    SidebarDirective,
+    MyTruckComponent,
+    MyGarbageComponent,
+    PickComponent,
   ],
   imports: [
     BrowserModule, FormsModule, RouterModule.forRoot(

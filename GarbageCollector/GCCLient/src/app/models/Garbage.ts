@@ -1,8 +1,11 @@
 import { Address } from './Address';
 import { SubMunicipality } from './SubMunicipality';
+import { Truck } from './Truck';
 
 export class Garbage {
-    public mobNo: String;
+    public id: Number ;
     public garbageLocation: Address = new Address();
-    public submunicipality: SubMunicipality = new SubMunicipality();
+    public garbageweight: Number;
+    public truck: Truck;
+    public otp: String;
 }

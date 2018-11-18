@@ -7,4 +7,5 @@ export class Address {
   public  pin: String ;
   public lat: Number;
   public lon: Number;
+  public freeformAddress: String;
 }

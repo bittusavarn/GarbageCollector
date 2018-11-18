@@ -1,8 +1,6 @@
-.has-success{
-    color: green;
-    text-align: center;
-  }
-  .has-error{
-      color: red;
-      text-align: center;
-    }
+.hght_cont{
+    color: darkmagenta;
+    padding : 15px;
+    font-style: normal;
+    font-weight: bold;
+}

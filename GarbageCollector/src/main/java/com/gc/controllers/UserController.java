@@ -29,7 +29,7 @@ public class UserController {
 		return new ResponseEntity<>(response,HttpStatus.OK);
 	}
 
-	@PostMapping("add")
+	@PostMapping("register")
 	ResponseEntity<ResponseTemplate<Object>> addUser(@RequestBody UserModel user) {
 		ResponseTemplate<Object> response = null;
 		try {
@@ -44,6 +44,13 @@ public class UserController {
 			response.setvError(e.getVerrors());
 		}
 
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	
+	@PostMapping("login")
+	ResponseEntity<ResponseTemplate<UserModel>> loginUser(@RequestBody UserModel user) {
+		ResponseTemplate<UserModel> response = userService.getUser(user);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
