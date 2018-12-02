@@ -12,9 +12,10 @@
 </head>
 <body class="jumbotron" style="padding-top: 0px;">
     <script type = "text/javascript">
-      function callJS(){
-        
+      function callJS(location){
+        window['angularComponentRef'].component.callFromOutside(location);
       }
+      
   </script> 
   
   <app-root></app-root>

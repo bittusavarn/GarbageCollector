@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { BaseComponent } from '../../models/BaseComponent';
 import { RestListener } from '../../models/RestListener';
 import { ResponseTemplate } from '../../models/ResponseTemplate';
@@ -15,9 +15,10 @@ import { OtpVerification } from '../../models/OtpVerification';
 })
 export class PickComponent extends BaseComponent implements OnInit, RestListener {
   model: OtpVerification = new OtpVerification();
-  constructor(private router: Router, private transferService: TransferServiceService, private restService: RestService, 
-    private route: ActivatedRoute) {
-    super();
+  constructor(private router: Router, private transferService: TransferServiceService, private restService: RestService,
+    private route: ActivatedRoute, zone: NgZone
+  ) {
+    super(zone);
    }
 
 

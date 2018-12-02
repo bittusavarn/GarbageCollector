@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '../models/User';
 import { State } from '../models/State';
@@ -19,8 +19,9 @@ export class LoginComponent extends BaseComponent implements OnInit, RestListene
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private restService: RestService
-        ) { super(); }
+        private restService: RestService,
+        zone: NgZone
+        ) { super(zone); }
 
     ngOnInit() {
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';

@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, NgZone } from '@angular/core';
 import {Router } from '@angular/router';
 import { BaseComponent } from '../models/BaseComponent';
 import { User } from '../models/User';
@@ -14,8 +14,9 @@ export class HomeComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         this.model = JSON.parse(super.getCurrentUser());
     }
-    constructor(private router: Router) {
-        super();
+    constructor(private router: Router, zone: NgZone
+    ) {
+        super(zone);
     }
 
     logout() {

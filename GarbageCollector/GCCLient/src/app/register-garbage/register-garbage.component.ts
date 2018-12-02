@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, NgZone } from '@angular/core';
 import { TransferServiceService } from '../services/transfer-service.service';
 import { Router } from '@angular/router';
 import { Address } from '../models/Address';
@@ -21,8 +21,9 @@ export class RegisterGarbageComponent extends BaseComponent implements OnInit, R
 
    public model: Garbage = new Garbage();
 
-  constructor(private transferService: TransferServiceService, private router: Router, private restServis: RestService) {
-    super();
+  constructor(private transferService: TransferServiceService, private router: Router, private restServis: RestService, zone: NgZone
+  ) {
+    super(zone);
   }
 
   ngOnInit() {

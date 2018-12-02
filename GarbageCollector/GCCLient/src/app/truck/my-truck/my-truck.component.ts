@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { BaseComponent } from '../../models/BaseComponent';
 import { RestListener } from '../../models/RestListener';
 import { Garbage } from '../../models/Garbage';
@@ -15,7 +15,8 @@ import { ResponseTemplate } from '../../models/ResponseTemplate';
 })
 export class MyTruckComponent extends BaseComponent implements OnInit, RestListener {
   model: Truck[] ;
-  constructor(private restService: RestService, private router: Router, private transferServce: TransferServiceService) { super(); }
+  constructor(private restService: RestService, private router: Router, private transferServce: TransferServiceService, zone: NgZone
+  ) { super(zone); }
 
   ngOnInit() {
     this.showGarbagestOBePicked();

@@ -1,4 +1,5 @@
 export class Constants {
+  public static value: any = '20.8,78.9';
      static countries: any = 	[{
         value : 'AF',
         label : 'Afghanistan'
@@ -761,4 +762,5 @@ export class Constants {
         }
         return text1;
     }
+
 }

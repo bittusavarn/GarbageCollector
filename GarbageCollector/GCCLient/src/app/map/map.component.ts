@@ -3,6 +3,7 @@ import { TransferServiceService } from '../services/transfer-service.service';
 import { Address } from '../models/Address';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../models/BaseComponent';
+import { Constants } from '../models/Constants';
 declare let L;
 declare let tomtom: any;
 
@@ -14,24 +15,14 @@ declare let tomtom: any;
 export class MapComponent extends BaseComponent implements OnInit {
   map: any = {};
   returnUrl: string;
-  value: any;
 
   garbageMarker: any = {};
   garbageIcon: any = {};
   searchResult: any = {};
-  constructor(private trasferService: TransferServiceService, private router: Router, private route: ActivatedRoute, private zone: NgZone) {
-    super();
-    window['angularComponentRef'] = {component: this, zone: zone};
-  }
-
-  callFromOutside(newValue: any) {
-    this.zone.run(() => {
-      this.value = newValue;
-      console.log(newValue);
-    });
-  }
-
-  ngOnInit() {
+  constructor(private trasferService: TransferServiceService, private router: Router, private route: ActivatedRoute,  zone: NgZone) {
+    super(zone);
+ }
+ ngOnInit() {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
     this.map = tomtom.L.map('map', {
       key: 'kUvfmVuGx1CpgWiTL7TKS1NegbyaOxpR',
@@ -72,7 +63,15 @@ export class MapComponent extends BaseComponent implements OnInit {
         mapObj.map.setView([res.lat, res.lon], 17);
       });
      }, (err) => {console.log(err); });
-
+     const currloc = this.convertToLatLon(Constants.value);
+     mapObj.map.setView([currloc.lat, currloc.lng], 17);
+     const res1: any = {};
+     res1.lat = currloc.lat;
+     res1.lon =  currloc.lng;
+     tomtom.reverseGeocode().position(res1).go().then(function (results) {
+       mapObj.drawAddresssOnMap(results);
+       mapObj.map.setView([res1.lat, res1.lon], 17);
+     });
   }
 
  onDone() {

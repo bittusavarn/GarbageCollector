@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { BaseComponent } from '../models/BaseComponent';
 import { RestService } from '../services/rest.service';
 import { Router } from '@angular/router';
@@ -14,7 +14,8 @@ import { Constants } from '../models/Constants';
 })
 export class TruckComponent extends BaseComponent implements OnInit {
   model: Truck = new Truck();
-  constructor(private transferService: TransferServiceService, private router: Router, private restServis: RestService) {super(); }
+  constructor(private transferService: TransferServiceService, private router: Router, private restServis: RestService, zone: NgZone
+  ) {super(zone); }
 
   ngOnInit() {
     if (this.transferService.truck) {

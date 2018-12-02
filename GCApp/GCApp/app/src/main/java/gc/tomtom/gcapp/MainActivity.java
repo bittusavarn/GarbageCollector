@@ -8,15 +8,13 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.nfc.Tag;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -37,8 +35,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient(){
             public void onPageFinished(WebView view, String url) {
-                Log.d(TAG,"Page fininshed" +location.getLatitude()+ location.getLongitude());
-                webView.loadUrl("javascript:callJS();");
+                if (location != null) {
+                    Log.d(TAG, "Page fininshed" + location.getLatitude() + location.getLongitude());
+                    webView.loadUrl("javascript:callJS('" + location.getLatitude() +","+ location.getLongitude() + "');");
+                }
             }
         });
         WebSettings ws = webView.getSettings();
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 Log.e(TAG, "Reflection fail", e);
             }
         }
-        webView.loadUrl("http://de9a4b15.ngrok.io");
+        webView.loadUrl("http://bb3e70e7.ngrok.io");
         checkLocationPermission();
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }
@@ -92,8 +92,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 == PackageManager.PERMISSION_GRANTED) {
             String provider = locationManager.getBestProvider(new Criteria(), true);
             locationManager.requestLocationUpdates(provider, 400, 1, this);
-            location = locationManager.getLastKnownLocation(provider);
-        }
+            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if(location!=null) {
+                Log.d(TAG, "Page fininshed" + location.getLatitude() + location.getLongitude());
+
+                webView.loadUrl("javascript:callJS('" + location.getLatitude() + ","+location.getLongitude() + "');");
+            }
+            }
     }
 
     @Override
@@ -184,6 +189,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     public void onLocationChanged(Location location) {
       Log.d(TAG,"location is" + location.getLatitude() +","+ location.getLongitude());
+        this.location = location;
+        webView.loadUrl("javascript:callJS('" + location.getLatitude() +"," +location.getLongitude() + "');");
     }
 
     @Override

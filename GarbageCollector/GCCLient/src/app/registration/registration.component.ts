@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { BaseComponent } from '../models/BaseComponent';
 import { RestListener } from '../models/RestListener';
 import { ResponseTemplate } from '../models/ResponseTemplate';
@@ -12,8 +12,9 @@ import { RestService } from '../services/rest.service';
 })
 export class RegistrationComponent extends BaseComponent implements OnInit, RestListener {
   model: User = new User();
-  constructor(private restServis: RestService) {
-    super();
+  constructor(private restServis: RestService, zone: NgZone
+  ) {
+    super(zone);
   }
 
   ngOnInit() {

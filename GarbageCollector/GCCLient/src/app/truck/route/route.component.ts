@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { TransferServiceService } from '../../services/transfer-service.service';
 import { Truck } from '../../models/Truck';
 import { Garbage } from '../../models/Garbage';
@@ -23,8 +23,9 @@ export class RouteComponent extends BaseComponent implements RestListener, OnIni
   truckMarker: any = {};
 
   constructor(private transferService: TransferServiceService, private restService: RestService, private router: Router,
-     private route: ActivatedRoute) {
-    super();
+     private route: ActivatedRoute, zone: NgZone
+    ) {
+    super(zone);
   }
 
   ngOnInit() {

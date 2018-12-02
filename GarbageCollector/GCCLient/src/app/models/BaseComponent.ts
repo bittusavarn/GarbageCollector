@@ -3,12 +3,22 @@ import { User } from './User';
 import { TransferServiceService } from '../services/transfer-service.service';
 import { Garbage } from './Garbage';
 import { Truck } from './Truck';
+import { NgZone } from '@angular/core';
+import { Constants } from './Constants';
 
 export class BaseComponent {
     state: State =  new State();
-     constructor() {
+    constructor(private zone: NgZone) {
         this.resetState();
+        window['angularComponentRef'] = {component: this, zone: zone};
      }
+
+   callFromOutside(newValue: any) {
+     this.zone.run(() => {
+      Constants.value = newValue;
+      console.log('Call from out side is  ' + newValue);
+    });
+  }
 
     resetState() {
         this.state.message = '';
